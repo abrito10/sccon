@@ -10,8 +10,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -27,14 +27,16 @@ public class Horario implements Serializable{
 	private Time horario;
 	private double preco;
 	
-	@ManyToOne
-	@JoinColumn(name = "cinema_id")
-	private Cinema cinema;
+	@ManyToMany(mappedBy = "horarios")
+	private List<Cinema> cinemas = new ArrayList<>();
 	
 	@JsonIgnore
-	@OneToMany(mappedBy = "horario")
+	@ManyToMany
+	@JoinTable(name = "HORARIO_ACENTO",
+		joinColumns = @JoinColumn(name = "horario_id"),
+		inverseJoinColumns = @JoinColumn(name = "acento_id"))
 	private List<Acento> acentos = new ArrayList<>();	
-	
+
 	public Horario() {
 	}
 
@@ -85,27 +87,16 @@ public class Horario implements Serializable{
 
 
 
-	public List<Acento> getAcentos() {
-		return acentos;
-	}
+	//public List<Acento> getAcentos() {
+	//	return acentos;
+	//}
 
 
 
-	public void setAcentos(List<Acento> acentos) {
-		this.acentos = acentos;
-	}
+	//public void setAcentos(List<Acento> acentos) {
+//		this.acentos = acentos;
+//	}
 
-
-
-	public Cinema getCinema() {
-		return cinema;
-	}
-
-
-
-	public void setCinema(Cinema cinema) {
-		this.cinema = cinema;
-	}
 
 
 
@@ -116,6 +107,30 @@ public class Horario implements Serializable{
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		return result;
 	}
+
+
+	public List<Cinema> getCinemas() {
+		return cinemas;
+	}
+
+
+
+	public void setCinemas(List<Cinema> cinemas) {
+		this.cinemas = cinemas;
+	}
+
+
+
+	public List<Acento> getAcentos() {
+		return acentos;
+	}
+
+
+
+	public void setAcentos(List<Acento> acentos) {
+		this.acentos = acentos;
+	}
+
 
 
 	@Override

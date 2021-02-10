@@ -1,13 +1,14 @@
 package com.abrito10.testesccon.entities;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -22,10 +23,11 @@ public class Acento implements Serializable{
 	private Integer numeroCadeira;
 	private Boolean acentoReservado;
 	
-	@ManyToOne
-	@JoinColumn(name = "horario_id")
-	private Horario horario;
 	
+	@ManyToMany(mappedBy = "acentos")
+	private List<Horario> horarios = new ArrayList<>();
+	
+
 	public Acento() {
 	}
 
@@ -60,20 +62,21 @@ public class Acento implements Serializable{
 		this.acentoReservado = acentoReservado;
 	}
 
-	public Horario getHorario() {
-		return horario;
-	}
-
-	public void setHorario(Horario horario) {
-		this.horario = horario;
-	}
-
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		return result;
+	}
+
+	public List<Horario> getHorarios() {
+		return horarios;
+	}
+
+	public void setHorarios(List<Horario> horarios) {
+		this.horarios = horarios;
 	}
 
 	@Override

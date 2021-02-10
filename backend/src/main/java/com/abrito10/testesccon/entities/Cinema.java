@@ -8,8 +8,9 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -28,7 +29,10 @@ public class Cinema implements Serializable{
 	private List<Filme> filmes = new ArrayList<>();
 	
 	@JsonIgnore
-	@OneToMany(mappedBy = "cinema")
+	@ManyToMany
+	@JoinTable(name = "CINEMA_HORARIO",
+		joinColumns = @JoinColumn(name = "cinema_id"),
+		inverseJoinColumns = @JoinColumn(name = "horario_id"))
 	private List<Horario> horarios = new ArrayList<>();	
 	
 	public Cinema() {
@@ -64,6 +68,7 @@ public class Cinema implements Serializable{
 		this.filmes = filmes;
 	}
 
+	
 	public List<Horario> getHorarios() {
 		return horarios;
 	}
